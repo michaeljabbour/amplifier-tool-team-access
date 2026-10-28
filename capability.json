@@ -1,0 +1,100 @@
+{
+  "id": "team-access",
+  "display_name": "Team Access",
+  "kind": "tool",
+  "promise": "Inspect GitHub access drift and apply the roster changes the user has authorized.",
+  "audience": "Repository owners administering collaborator access from a declared roster.",
+  "trigger": "Audit, preview or apply GitHub collaborator changes from a roster.",
+  "skill_path": null,
+  "modes": [
+    {
+      "name": "Audit",
+      "when": "The owner needs to inspect access drift.",
+      "output": "Current-vs-declared access findings."
+    },
+    {
+      "name": "Preview",
+      "when": "A roster change is being reviewed.",
+      "output": "A dry-run of invitations, permission changes and removals."
+    },
+    {
+      "name": "Apply",
+      "when": "The exact access change is authorized.",
+      "output": "Actual GitHub operations with circuit-breaker and incomplete-roster checks."
+    }
+  ],
+  "examples": [
+    {
+      "title": "Fictional roster review",
+      "brief": "A fictional repository roster contains a mistyped role key.",
+      "before": "A sync could treat omitted members as removal candidates.",
+      "after": "Warnings and incomplete-resolution gates make the roster problem reviewable before mutation.",
+      "why": "The declared roster and the proposed changes must both be inspectable.",
+      "fictional": true
+    }
+  ],
+  "boundaries": [
+    "Native addteam remains the executable and import namespace; no coaching skill or hidden invitation automation is introduced.",
+    "Audit/dry-run may read GitHub; tests use mocks and do not invite users, accept invitations, change permissions or send welcome issues.",
+    "A removal circuit breaker is an operational limit; it does not itself authorize any access change."
+  ],
+  "install_commands": [
+    "python3 -m pip install .",
+    "addteam --help"
+  ],
+  "runtime_install_commands": [
+    "python3 -m pip install .",
+    "addteam --help"
+  ],
+  "verification": [
+    {
+      "name": "Native functional baseline",
+      "command": "python3 -m pytest -q",
+      "expected": "Original deterministic/mocked native checks pass.",
+      "status": "passed",
+      "evidence": "287 native mocked tests and 2 roster parsing checks passed; no GitHub invitation or permission mutation."
+    },
+    {
+      "name": "Source-specific acceptance",
+      "command": "python3 scripts/functional_gate.py",
+      "expected": "Check real configuration/schema/validation branches without remote execution.",
+      "status": "passed",
+      "evidence": "287 native mocked tests and 2 roster parsing checks passed; no GitHub invitation or permission mutation."
+    },
+    {
+      "name": "Live execution acceptance",
+      "command": "See native production guide",
+      "expected": "Explicitly authorized real provider, invite or video task.",
+      "status": "not-run",
+      "evidence": "No paid model call, real invitation, permission mutation, browser recording or film render was performed."
+    },
+    {
+      "name": "Clean wheel installation",
+      "command": "Build wheel, install into a fresh venv, then run installed entry points outside checkout",
+      "expected": "Stable native interfaces and packaged assets survive installation.",
+      "status": "passed",
+      "evidence": "All three wheels installed in a fresh Python 3.12 environment. Team Access help and TeaserKit no-AI storyboard validation passed; Imagen installed stdio smoke is recorded separately."
+    }
+  ],
+  "sources": [
+    {
+      "repo": "addteam",
+      "commit": "4caf2cc1b81f314032ba5d8748f758d33f2f1171",
+      "paths": [
+        "src/addteam",
+        "tests",
+        "examples",
+        "scripts/bootstrap_repo.py"
+      ],
+      "license": "MIT",
+      "role": "Retained native owner implementation, import/CLI interfaces and complete source history."
+    }
+  ],
+  "consolidation": [
+    "Public family repository name changes independently from stable native package/CLI/import identity.",
+    "No forced portable coaching wrapper; ordinary execution stays directly installable."
+  ],
+  "docs": [
+    "docs/CONSOLIDATION.md"
+  ]
+}

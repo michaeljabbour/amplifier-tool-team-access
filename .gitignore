@@ -13,3 +13,7 @@ uv.lock
 # macOS
 .DS_Store
 .coverage
+
+_site/
+
+*.pyc

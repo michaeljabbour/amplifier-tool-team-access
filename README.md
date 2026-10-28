@@ -1,4 +1,12 @@
-# addteam
+# Team Access
+
+Inspect GitHub access drift and apply the roster changes the user has authorized.
+
+Native identity stays `addteam`. Install locally with `python3 -m pip install .`. See [consolidation boundaries](docs/CONSOLIDATION.md).
+
+## Retained native guide
+
+### addteam
 
 Invite GitHub collaborators from a simple YAML file.
 
