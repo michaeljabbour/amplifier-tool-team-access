@@ -1,8 +1,43 @@
 # Team Access
 
-Inspect GitHub access drift and apply the roster changes the user has authorized.
+See who has access. Apply the roster you intended.
 
-Native identity stays `addteam`. Install locally with `python3 -m pip install .`. See [consolidation boundaries](docs/CONSOLIDATION.md).
+For GitHub repository maintainers. Team Access compares a YAML roster with collaborators and invitations, shows permission drift and applies the changes you authorize through the stable addteam command.
+
+[Explore the site](https://michaeljabbour.github.io/amplifier-tool-team-access/)
+
+## What you get
+
+- **Keep one readable roster.** Use named role groups in team.yaml rather than remembering individual invitations and permission settings.
+- **Review drift before changing access.** Audit or dry-run additions, permission changes and removals before an apply operation.
+- **Use it across repositories.** Reuse a central roster or inspect several repositories while keeping the target repository explicit.
+
+## Start here
+
+```sh
+git clone https://github.com/michaeljabbour/amplifier-tool-team-access.git
+cd amplifier-tool-team-access
+python3 -m venv .venv
+.venv/bin/python -m pip install .
+.venv/bin/addteam --help
+```
+
+The package is installed into the project virtual environment. The native guide below explains configuration and actual operations. Start by inspecting help; no provider or GitHub operation is needed to do that.
+
+## What you need
+
+- The quickstart uses macOS/Linux virtual-environment paths. On Windows, use the corresponding `.venv\Scripts` executables.
+- The native package and command remain addteam.
+- GitHub CLI must be installed and authenticated with access to the selected repository.
+- Start with --help, then audit or dry-run. Applying or syncing changes is a separate consequential action.
+
+## Evidence and limits
+
+Native mocked tests, roster parsing and a clean-wheel entry-point check passed. No real invitations, permission mutations or welcome messages were performed for the release checks.
+
+The worked examples on the site are fictional. They illustrate the output and decisions; they are not user results or measured benefit. See [consolidation and runtime boundaries](docs/CONSOLIDATION.md) for retained interfaces and acceptance scope.
+
+---
 
 ## Retained native guide
 

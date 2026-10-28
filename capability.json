@@ -26,7 +26,7 @@
   "examples": [
     {
       "title": "Fictional roster review",
-      "brief": "A fictional repository roster contains a mistyped role key.",
+      "brief": "Use Team Access to explain a fictional team.yaml and prepare a dry-run access review for an explicitly selected repository. Separate additions, permission changes and removals. Keep welcome issues and AI summaries off. Do not invite, remove or change anyone’s access.",
       "before": "A sync could treat omitted members as removal candidates.",
       "after": "Warnings and incomplete-resolution gates make the roster problem reviewable before mutation.",
       "why": "The declared roster and the proposed changes must both be inspectable.",
@@ -39,13 +39,11 @@
     "A removal circuit breaker is an operational limit; it does not itself authorize any access change."
   ],
   "install_commands": [
-    "python3 -m pip install .",
-    "addteam --help"
+    "python3 -m venv .venv",
+    ".venv/bin/python -m pip install .",
+    ".venv/bin/addteam --help"
   ],
-  "runtime_install_commands": [
-    "python3 -m pip install .",
-    "addteam --help"
-  ],
+  "runtime_install_commands": [],
   "verification": [
     {
       "name": "Native functional baseline",
@@ -97,5 +95,58 @@
   "docs": [
     "docs/CONSOLIDATION.md"
   ],
-  "publication_status": "Installation and evidence scopes are documented below."
+  "publication_status": "Installation and evidence scopes are documented below.",
+  "marketing": {
+    "headline": "See who has access. Apply the roster you intended.",
+    "lead": "For GitHub repository maintainers. Team Access compares a YAML roster with collaborators and invitations, shows permission drift and applies the changes you authorize through the stable addteam command.",
+    "benefits": [
+      {
+        "title": "Keep one readable roster",
+        "body": "Use named role groups in team.yaml rather than remembering individual invitations and permission settings."
+      },
+      {
+        "title": "Review drift before changing access",
+        "body": "Audit or dry-run additions, permission changes and removals before an apply operation."
+      },
+      {
+        "title": "Use it across repositories",
+        "body": "Reuse a central roster or inspect several repositories while keeping the target repository explicit."
+      }
+    ],
+    "walkthrough": [
+      {
+        "title": "Install and select the target",
+        "detail": "Use an authenticated GitHub CLI and select the repository that the roster applies to."
+      },
+      {
+        "title": "Preview the difference",
+        "detail": "Read the YAML, inspect current access and run audit or dry-run with AI summaries disabled if unnecessary."
+      },
+      {
+        "title": "Apply the authorized change",
+        "detail": "Invite or adjust the reviewed set. Sync removals remain an explicit operation with the native safeguards."
+      }
+    ],
+    "use_when": [
+      "A repository’s collaborator list has drifted from the team roster.",
+      "You want a repeatable access audit in CI or across repositories.",
+      "Several repositories share a central team configuration."
+    ],
+    "not_for": [
+      "Inferring permission to invite or remove people from installing the tool.",
+      "Treating a mocked test as a live permission-change result."
+    ],
+    "quickstart_prompt": "Use Team Access to explain a fictional team.yaml and prepare a dry-run access review for an explicitly selected repository. Separate additions, permission changes and removals. Keep welcome issues and AI summaries off. Do not invite, remove or change anyone’s access.",
+    "output_preview": "Roster review\nAdditions: people listed in the roster but absent from access\nPermission drift: existing collaborators with a different role\nRemovals: considered only by explicit sync mode\n\nFirst command: addteam --help\nRead-only choices: audit or dry-run\nApply: only the reviewed and authorized target set",
+    "example_note": "Fictional access review. No real usernames, invitations or permission changes are represented.",
+    "install_notes": [
+      "The native package and command remain addteam.",
+      "GitHub CLI must be installed and authenticated with access to the selected repository.",
+      "Start with --help, then audit or dry-run. Applying or syncing changes is a separate consequential action.",
+      "The shown virtual-environment commands use macOS/Linux paths; on Windows, use the corresponding .venv\\Scripts executables."
+    ],
+    "proof_summary": "Native mocked tests, roster parsing and a clean-wheel entry-point check passed. No real invitations, permission mutations or welcome messages were performed for the release checks.",
+    "next_step": "Read the command help and preview a roster against one explicitly selected repository."
+  },
+  "repository_url": "https://github.com/michaeljabbour/amplifier-tool-team-access"
 }
