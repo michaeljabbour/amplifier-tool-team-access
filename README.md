@@ -2,6 +2,8 @@
 
 See who has access. Apply the roster you intended.
 
+Watch the [72-second film](https://michaeljabbour.github.io/amplifier-tool-team-access/#film): keys handed to whoever knocks, and how one roster file shows who has access before anything changes. The example in it is fictional.
+
 For GitHub repository maintainers. Team Access compares a YAML roster with collaborators and invitations, shows permission drift and applies the changes you authorize through the stable addteam command.
 
 [Explore the site](https://michaeljabbour.github.io/amplifier-tool-team-access/)

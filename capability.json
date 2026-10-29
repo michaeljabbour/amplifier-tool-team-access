@@ -148,5 +148,12 @@
     "proof_summary": "Native mocked tests, roster parsing and a clean-wheel entry-point check passed. No real invitations, permission mutations or welcome messages were performed for the release checks.",
     "next_step": "Read the command help and preview a roster against one explicitly selected repository."
   },
-  "repository_url": "https://github.com/michaeljabbour/amplifier-tool-team-access"
+  "repository_url": "https://github.com/michaeljabbour/amplifier-tool-team-access",
+  "film": {
+    "file": "team-access-film",
+    "seconds": 72,
+    "heading": "Look before you sync.",
+    "blurb": "In 72 seconds, Tansy the squirrel hands a key to whoever knocks, and months later nobody knows who still holds one. Team Access keeps one roster file of who gets in and how far. An audit compares it with real access and changes nothing, a dry run lists every change first, removals wait for sync mode, a typo gets a warning, and a circuit breaker stops a sync from removing half the team at once. Captions are on the player; a transcript is below.",
+    "note": "The team, its handles and the repository are a fictional example. The film shows how the tool behaves; it does not report results."
+  }
 }

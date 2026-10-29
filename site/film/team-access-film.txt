@@ -1,0 +1,10 @@
+Meet Tansy. Tansy hands out the keys to your team’s code.
+Whoever knocks gets one: a contractor, a new hire, a reviewer who only reads.
+Months later, nobody knows who still holds a key.
+Team Access keeps one roster: a short file of who gets in, and how far.
+An audit compares the roster with real access, and changes nothing.
+A dry run lists every change first. Removals wait for sync mode, which asks.
+A typo gets a warning, and sync won’t remove half the team at once.
+Its tests used stand-ins. No real invites went out. Applying is your call.
+On screen: Look before you sync.
+Team Access. See who has access. Apply the roster you intended.
