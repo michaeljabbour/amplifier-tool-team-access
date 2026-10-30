@@ -657,7 +657,8 @@ class TestGenerateRepoSummary:
         assert result == "google summary"
         call_url = mock_post.call_args[0][0]
         assert "generativelanguage" in call_url
-        assert "key=test-key" in call_url
+        assert "key=" not in call_url
+        assert mock_post.call_args[1]["headers"]["x-goog-api-key"] == "test-key"
 
     def test_unknown_provider_raises(self):
         with pytest.raises(RuntimeError, match="Unknown provider"):

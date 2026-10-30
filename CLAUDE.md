@@ -67,6 +67,16 @@ Unknown YAML keys land in `TeamConfig.warnings`; team expansion failures also se
 
 Exit codes: 0 success, 1 runtime error (or drift with `--fail-on-drift`), 2 usage error.
 
+### Mutating commands and authorization (agents: read this)
+
+These are **intentionally** mutating; do not change their semantics and do not run them without explicit user authorization for the exact repo/roster:
+
+- Bare `addteam` (Apply mode, `app.py`) applies the roster immediately: invitations, permission fixes, team memberships, optional welcome issues. No confirmation for additions/permission changes.
+- `addteam --sync` / `--sync-teams` also removes people; removal prompts only when interactive, and is auto-confirmed with `--yes` or non-interactively (`human` is false under `--quiet`/`--json`), bounded only by the `--max-removals` circuit breaker.
+- `addteam accept` (`app.py`, `auto_confirm = args.yes or not (stdin tty and console is terminal)`) auto-confirms and accepts invitations when not on an interactive terminal.
+
+Always run the dry-run first (`-n/--dry-run` exists on bare `addteam`, `--sync`, and `accept`) and show the preview to the user; `-a/--audit`, `--report`, and `--org` are read-only. Tests must keep using mocks; never exercise these against a real repo or account.
+
 ### Permission Mapping
 
 Role names in YAML map to GitHub permissions:

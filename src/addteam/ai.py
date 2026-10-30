@@ -6,7 +6,6 @@ provider based on which API keys are present in the environment.
 
 from __future__ import annotations
 
-import json
 import os
 
 import httpx
@@ -50,18 +49,18 @@ def available_providers() -> list[str]:
 def _http_post_json(url: str, *, headers: dict[str, str], payload: dict, timeout_s: int = 30) -> dict:
     try:
         resp = httpx.post(url, json=payload, headers=headers, timeout=timeout_s)
-    except httpx.RequestError as exc:
-        raise RuntimeError(f"Network error calling {url}: {exc}") from exc
+    except httpx.RequestError:
+        raise RuntimeError("AI provider request failed (network error)") from None
 
     try:
         resp.raise_for_status()
     except httpx.HTTPStatusError as exc:
-        raise RuntimeError(f"HTTP {exc.response.status_code} from {url}: {exc.response.text}") from exc
+        raise RuntimeError(f"AI provider request failed (HTTP {exc.response.status_code})") from None
 
     try:
         return resp.json()
-    except json.JSONDecodeError as exc:
-        raise RuntimeError(f"Non-JSON response from {url}: {resp.text[:200]}") from exc
+    except ValueError:
+        raise RuntimeError("AI provider returned invalid JSON") from None
 
 
 def _ai_request(provider_cfg: dict, api_key: str, prompt: str) -> tuple[str, dict, dict]:
@@ -105,8 +104,8 @@ def _ai_request(provider_cfg: dict, api_key: str, prompt: str) -> tuple[str, dic
         )
     # google
     return (
-        f"{url}?key={api_key}",
-        {"Content-Type": "application/json"},
+        url,
+        {"Content-Type": "application/json", "x-goog-api-key": api_key},
         {
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {"maxOutputTokens": 500, "temperature": 0.2},
@@ -131,8 +130,8 @@ def _ai_extract(provider_cfg: dict, response: dict) -> str:
             return response["content"][0]["text"].strip()
         # google
         return response["candidates"][0]["content"]["parts"][0]["text"].strip()
-    except (KeyError, IndexError, AttributeError) as exc:
-        raise RuntimeError(f"Unexpected {fmt} response: {response}") from exc
+    except (KeyError, IndexError, AttributeError, TypeError):
+        raise RuntimeError("AI provider returned an unexpected response format") from None
 
 
 def _generate_repo_summary(

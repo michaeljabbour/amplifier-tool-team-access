@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-30 — Documentation: mutating-command guidance
+
+- Document that bare `addteam`, `--sync` and `addteam accept` are mutating (and that `accept` auto-confirms when non-interactive); hosts must require authorization and preview with `-n/--dry-run` first. Documentation only; no behavior change.
+
 ## 2026-10-29 — Film
 
 - Add a 72-second film to the site, with captions, a transcript, a poster and a 15-second cut. The example in it is fictional, and it reports no results.

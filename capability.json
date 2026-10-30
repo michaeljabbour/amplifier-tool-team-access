@@ -26,7 +26,7 @@
   "examples": [
     {
       "title": "Fictional roster review",
-      "brief": "Use Team Access to explain a fictional team.yaml and prepare a dry-run access review for an explicitly selected repository. Separate additions, permission changes and removals. Keep welcome issues and AI summaries off. Do not invite, remove or change anyone’s access.",
+      "brief": "Use Team Access to explain a fictional team.yaml and prepare a dry-run access review for an explicitly selected repository. Separate additions, permission changes and removals. Keep welcome issues and AI summaries off. Do not invite, remove or change anyone\u2019s access.",
       "before": "A sync could treat omitted members as removal candidates.",
       "after": "Warnings and incomplete-resolution gates make the roster problem reviewable before mutation.",
       "why": "The declared roster and the proposed changes must both be inspectable.",
@@ -128,7 +128,7 @@
       }
     ],
     "use_when": [
-      "A repository’s collaborator list has drifted from the team roster.",
+      "A repository\u2019s collaborator list has drifted from the team roster.",
       "You want a repeatable access audit in CI or across repositories.",
       "Several repositories share a central team configuration."
     ],
@@ -136,7 +136,7 @@
       "Inferring permission to invite or remove people from installing the tool.",
       "Treating a mocked test as a live permission-change result."
     ],
-    "quickstart_prompt": "Use Team Access to explain a fictional team.yaml and prepare a dry-run access review for an explicitly selected repository. Separate additions, permission changes and removals. Keep welcome issues and AI summaries off. Do not invite, remove or change anyone’s access.",
+    "quickstart_prompt": "Use Team Access to explain a fictional team.yaml and prepare a dry-run access review for an explicitly selected repository. Separate additions, permission changes and removals. Keep welcome issues and AI summaries off. Do not invite, remove or change anyone\u2019s access.",
     "output_preview": "Roster review\nAdditions: people listed in the roster but absent from access\nPermission drift: existing collaborators with a different role\nRemovals: considered only by explicit sync mode\n\nFirst command: addteam --help\nRead-only choices: audit or dry-run\nApply: only the reviewed and authorized target set",
     "example_note": "Fictional access review. No real usernames, invitations or permission changes are represented.",
     "install_notes": [
@@ -148,12 +148,82 @@
     "proof_summary": "Native mocked tests, roster parsing and a clean-wheel entry-point check passed. No real invitations, permission mutations or welcome messages were performed for the release checks.",
     "next_step": "Read the command help and preview a roster against one explicitly selected repository."
   },
-  "repository_url": "https://github.com/michaeljabbour/amplifier-tool-team-access",
+  "repository_url": "https://github.com/michaeljabbour/amplifier-capability-team-access",
+  "name": "amplifier-capability-team-access",
+  "legacy_names": [
+    "amplifier-tool-team-access"
+  ],
+  "contract_version": "amplifier-capability/v1",
+  "version": "1.6.1",
+  "version_basis": "Existing release metadata",
+  "engine": "None",
+  "engine_components": {
+    "roster_drift_invite_permission_sync": "None",
+    "optional_welcome_summary": "LLM, separately authorized"
+  },
+  "surfaces": [
+    "cli",
+    "python-library"
+  ],
+  "portable_method": null,
+  "interfaces": {
+    "portable": null,
+    "native": {
+      "distribution": "addteam",
+      "entrypoints": {
+        "addteam": "addteam.cli:main"
+      },
+      "docs": [
+        "docs/CONSOLIDATION.md"
+      ],
+      "status": "Existing declared entrypoints preserved; runtime signatures, service access and installation tests remain separate evidence."
+    },
+    "host_adapters": {
+      "amplifier_bundle": null,
+      "grants_autonomy": false
+    }
+  },
+  "permissions": {
+    "installation": {
+      "network": false,
+      "executes_capability_code": false,
+      "writes": [
+        "Selected discovery folders",
+        ".capability-state transaction backups"
+      ],
+      "grants_runtime_permissions": false
+    },
+    "runtime": {
+      "status": "Host/caller authorizes each operation; installation is not a tool allowlist or standing approval.",
+      "declared_boundaries": [
+        "Native addteam remains the executable and import namespace; no coaching skill or hidden invitation automation is introduced.",
+        "Audit/dry-run may read GitHub; tests use mocks and do not invite users, accept invitations, change permissions or send welcome issues.",
+        "A removal circuit breaker is an operational limit; it does not itself authorize any access change."
+      ]
+    },
+    "secret_names": {
+      "discovery_requires": [],
+      "native_runtime_inventory": "See native documentation; no credentials are bundled or inferred."
+    }
+  },
+  "dataflow": {
+    "installation": "Read pinned tracked portable source and copy locally with SHA-256 receipts. No source text is transmitted.",
+    "method": "Caller supplies authorized context; existing promise and boundaries govern output.",
+    "native_runtime": "Provider/network/storage flows are owned by native interfaces and host authorization; these files do not enable them."
+  },
+  "source_policy": {
+    "revision": "Explicit full40-character Git commit required at installation; never infer latest.",
+    "repository_rename": "Public identity may change; skill folder, imports, entrypoints, tool IDs and schemas remain stable.",
+    "research": ".research/market remains local and ignored; AGENTS governs refresh."
+  },
   "film": {
     "file": "team-access-film",
     "seconds": 72,
     "heading": "Look before you sync.",
     "blurb": "In 72 seconds, Tansy the squirrel hands a key to whoever knocks, and months later nobody knows who still holds one. Team Access keeps one roster file of who gets in and how far. An audit compares it with real access and changes nothing, a dry run lists every change first, removals wait for sync mode, a typo gets a warning, and a circuit breaker stops a sync from removing half the team at once. Captions are on the player; a transcript is below.",
     "note": "The team, its handles and the repository are a fictional example. The film shows how the tool behaves; it does not report results."
-  }
+  },
+  "repository_aliases": [
+    "https://github.com/michaeljabbour/amplifier-tool-team-access"
+  ]
 }

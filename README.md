@@ -33,6 +33,30 @@ The package is installed into the project virtual environment. The native guide 
 - GitHub CLI must be installed and authenticated with access to the selected repository.
 - Start with --help, then audit or dry-run. Applying or syncing changes is a separate consequential action.
 
+## Which commands change things (read before automating)
+
+Several forms of `addteam` are **mutating** and act on the real GitHub repository or account. This is intentional and unchanged; hosts, agents and CI wrappers must treat these as requiring explicit authorization for the exact repository and roster.
+
+| Command | Effect |
+|---------|--------|
+| `addteam` (bare, or with `-r`/`--from`/`--group`) | **Mutates.** Applies the roster immediately: sends invitations, updates permission drift, ensures team memberships, and (if enabled) creates welcome issues. There is no confirmation prompt for additions or permission changes. |
+| `addteam -s` / `--sync` / `--sync-teams` | **Mutates, including removals.** Prompts before removals only when interactive; with `-y`/`--yes`, or non-interactively (`--quiet`, `--json`, piped/CI), removals proceed without a prompt, limited only by the `--max-removals` circuit breaker. |
+| `addteam accept` | **Mutates your GitHub account.** Accepts your pending repository invitations. It asks for confirmation only on an interactive terminal; with `-y`/`--yes` **or when stdin/stdout is not a terminal** (CI, pipes, agent shells) it auto-confirms and accepts every matching invitation. |
+| `addteam -i`, `--init-action`, `--init-multi-repo` | Writes local files (`team.yaml`, workflows). |
+| `addteam -n` / `--dry-run` | Read-only preview of the above. |
+| `addteam -a` / `--audit`, `--report`, `--org` | Read-only (reads GitHub). |
+
+**Recommended workflow:** always preview first, review the output, then run the mutating command only once the exact change is authorized.
+
+```bash
+addteam -n -r owner/repo            # preview what bare `addteam` would do
+addteam -s -n -r owner/repo         # preview a sync, including whether the removal breaker would trip
+addteam accept -n [--from OWNER]    # preview which invitations `accept` would accept
+addteam -a --json -r owner/repo     # machine-readable drift audit (no changes)
+```
+
+Automation guidance: do not run bare `addteam`, `--sync`, or `accept` from an unattended host or agent unless a human has authorized that specific action; the non-interactive auto-confirm behavior means there is no second prompt to catch a mistake. `-n/--dry-run` and `--audit` exist on every path above and are safe defaults. The removal circuit breaker (`--max-removals`) is an operational limit, not an authorization.
+
 ## Evidence and limits
 
 Native mocked tests, roster parsing and a clean-wheel entry-point check passed. No real invitations, permission mutations or welcome messages were performed for the release checks.
@@ -129,8 +153,10 @@ Unknown keys produce a warning (not silent drops), so a typo like
 
 ## Common Commands
 
+> **Mutating:** bare `addteam` applies changes immediately and `addteam accept` can auto-confirm when non-interactive. Preview with `-n` first; see [Which commands change things](#which-commands-change-things-read-before-automating).
+
 ```bash
-addteam                    # invite from local team.yaml
+addteam                    # invite from local team.yaml  (MUTATES - preview with -n first)
 addteam -n                 # dry-run (preview only)
 addteam -a                 # audit (show drift)
 addteam -s                 # sync (also removes unlisted users, asks first)
@@ -146,10 +172,15 @@ wrong permission, it is updated to match team.yaml.
 If you're on the receiving end of invitations from repos that use addteam:
 
 ```bash
-addteam accept                  # list + accept all your pending invitations
-addteam accept --from myorg     # only from a specific org/owner
-addteam accept -n               # preview only
+addteam accept -n               # preview only (do this first)
+addteam accept                  # list + accept all your pending invitations  (MUTATES)
+addteam accept --from myorg     # only from a specific org/owner               (MUTATES)
 ```
+
+`accept` changes your GitHub account. It prompts for confirmation only on an
+interactive terminal; with `--yes`, or whenever stdin/stdout is not a terminal
+(CI, pipes, agent shells), it auto-confirms. Hosts must treat it as requiring
+authorization and run `addteam accept -n` first.
 
 Expired invitations (GitHub auto-expires after 7 days) are listed but can't
 be accepted — ask whoever invited you to re-run `addteam`.
